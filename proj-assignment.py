@@ -94,90 +94,11 @@ while i < proj_team_size:
     assign()
     i += 1
 
-print(team_assignments)
-print(deque_dict)
-print(remaining)
-
 remaining_roster = df_collection[roster_title][df_collection[roster_title].iloc[:, 0].isin(remaining)]
 remaining_roster = remaining_roster.reset_index(drop=True)
-print(remaining_roster)
 
 with pd.ExcelWriter('output.xlsx') as writer:
     remaining_roster.to_excel(writer, sheet_name='remaining-roster', index=False, header=False)
     for key in proj_team_names:
         df = df_collection[key][df_collection[key].iloc[:, 0].isin(team_assignments[key])]
         df.to_excel(writer, sheet_name=key, index=False, header=False)
-
-"""
-remaining = []
-deque_dict = {k:deque() for k in proj_team_names}
-for key in df_collection.keys():
-    # check that audition numbers are all integers
-    df = df_collection[key]
-    if df.iloc[:, 0].dtype != np.int64:
-        raise Exception('Audition numbers not all integers')
-    if key == roster_title:
-        if list(df.iloc[:, 0]) != list(set(list(df.iloc[:, 0]))):
-            raise Exception('Audition numbers not sorted or not unique')
-        remaining.extend(df.iloc[:, 0])
-    else:
-        deque_dict[key].extend(df.iloc[:, 0])
-
-team_assignments = {k:[] for k in proj_team_names}
-# curr_top_picks = {k:v for (k, v) in zip(proj_team_names, [df.iloc[0, 0] for df in df_collection.values()][1:])}
-curr_top_picks = {k:v for (k,v) in zip(proj_team_names, [deque_dict[j].popleft() for j in proj_team_names])}
-
-print(team_assignments)
-print(remaining)
-print(curr_top_picks)
-print(deque_dict)
-
-def assign():
-    final_picks = {k:-1 for k in proj_team_names}
-    while -1 in final_picks.values():
-        unique_nums = set(list(curr_top_picks.values()))
-        # check if a top pick has already been assigned
-        for key in [k for k,v in final_picks.items() if v == -1]:
-            if curr_top_picks[key] in unique_nums:
-                final_picks[key] = curr_top_picks[key]
-            else:
-                
-                curr_top_picks[key] = 
-
-
-    while -1 in final_picks.values():
-        unique_nums = set(list(curr_top_picks.values()))
-        for key in curr_top_picks.keys():
-            if curr_top_picks[key] in unique_nums:
-                final_picks[key] = curr_top_picks[key]
-            else:
-
-
-    for key in curr_top_picks.keys():
-        selected = curr_top_picks[key]
-        team_assignments[key].append(selected)
-
-
-
-# def assign(curr_top_dict):
-#     curr_top_list = list(curr_top_dict.values())
-#     unique_nums = set(curr_top_list)
-#     for key in curr_top_dict:
-#         # number is unique, i.e. only one team picked that person for that ranking
-#         if curr_top_dict[key] in unique_nums:
-#             team_assignments[key].append(curr_top_dict[key])
-#         # number is not unique, i.e. multiple teams picked that person for that ranking
-#         else:
-#             # break ties randomly
-
-        
-#     # for item in curr_top_list:
-#     #     # if number is unique, add them to the team
-#     #     if item in unique_nums:
-#     #         team_assignments
-#     #     # if there is a tie, randomly pick
-
-
-# while any(len(l) < proj_team_size for l in team_assignments.values()):
-#     assign(curr_top_picks)
-"""
