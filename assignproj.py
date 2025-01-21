@@ -8,8 +8,8 @@ Cd into the directory containing the project team preference Excel file.
 Run this script as "python assignproj.py EXCEL_FILENAME PROJECT_TEAM_SIZE"
 
 Creates an Excel file containing the following sheets:
-sheet 0: remaining auditionees after assignment (audition number, name)
-sheets 1-n: project team assignments (audition number, name)
+sheet 0: remaining auditionees after assignment (audition number, name, email)
+sheets 1-n: project team assignments (audition number, name, email)
 
 Common Errors:
 - IndexError: pop from an empty deque --> insufficient team picks or too much overlap, request additional preferences
