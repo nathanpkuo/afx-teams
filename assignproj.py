@@ -106,5 +106,6 @@ if __name__ == "__main__":
     with pd.ExcelWriter('proj_output.xlsx') as writer:
         remaining_roster.to_excel(writer, sheet_name='remaining_roster', index=False, header=False)
         for key in list(df_collection.keys())[1:]:
-            df = df_collection[key][df_collection[key].iloc[:, 0].isin(assignment_dict[key])]
+            # df = df_collection[key][df_collection[key].iloc[:, 0].isin(assignment_dict[key])]
+            df = df_collection[roster_title][df_collection[roster_title].iloc[:, 0].isin(assignment_dict[key])]
             df.to_excel(writer, sheet_name=key, index=False, header=False)

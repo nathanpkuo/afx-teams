@@ -70,7 +70,8 @@ assignment_dict, remaining_list = ranked_assignment(df_collection, train_select_
 # add in board picks
 max_team_size_before_rand = 0
 for key in train_team_names:
-    assignment_dict[key].extend(board_picks[key].iloc[:, 0].tolist())
+    if not (board_picks[key].empty):
+        assignment_dict[key].extend(board_picks[key].iloc[:, 0].tolist())
     max_team_size_before_rand = max(max_team_size_before_rand, len(assignment_dict[key]))
 
 # even out team sizes with random assignment
@@ -101,13 +102,16 @@ while (i < rand_assign_size) and (len(remaining_list) > 0):
         randomly_selected_dict[key].extend(next_to_add[key])
     i += 1
 
+for key in train_team_names:
+    assignment_dict[key].extend(randomly_selected_dict[key])
+
 remaining_roster = df_collection[roster_title][df_collection[roster_title].iloc[:, 0].isin(remaining_list)]
 remaining_roster = remaining_roster.reset_index(drop=True)
 
 with pd.ExcelWriter('train_output.xlsx') as writer:
     remaining_roster.to_excel(writer, sheet_name='waitlist_roster', index=False, header=False)
     for key in train_team_names:
-        df = df_collection[key][df_collection[key].iloc[:, 0].isin(assignment_dict[key])]
+        df = df_collection[roster_title][df_collection[roster_title].iloc[:, 0].isin(assignment_dict[key])]
         # df2 = df_collection[roster_title][df_collection[roster_title].iloc[:, 0].isin(randomly_selected_dict[key])]
         # df = df_collection[roster_title][df_collection[roster_title].iloc[:, 0].isin(assignment_dict[key])]
         # df = df.reset_index(drop=True)
